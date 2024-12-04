@@ -1,49 +1,40 @@
 import styled from "styled-components";
 import MaterialUi from "./components/material-ui";
-// import { StyledEngineProvider } from '@mui/system';
-// import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-
+import dayjs, { Dayjs } from "dayjs";
+import { useState } from "react";
 
 const App = () => {
+
+  const [state,setState] = useState<{time:Dayjs | null,error: string | null}>({time:null,error:null});
+
   return (
-    // <StyledEngineProvider injectFirst>
-      // <ThemeProvider theme={theme}>
         <AppContainer>
-          <MaterialUi/>
+
+          {state.error ? <p>{state.error}</p> : null}
+
+          {state?.time?.isValid() ? <p>{state.time.format(`YYYY-MM-DD HH:MM`)}</p> : null}
+          
+          <MaterialUi 
+            onChange={(val)=>{setState((prev)=>({...prev,time:val}))}}
+            onError={(err)=>setState((prev)=>({...prev,error:err}))}
+            minTime={dayjs()} 
+            maxTime={dayjs()}
+          />
         </AppContainer>
-      // </ThemeProvider>
-    // </StyledEngineProvider>
+ 
   )
 }
 
 export default App;
 
 const AppContainer = styled.div`
-  border:1px solid red;
   padding:20px 10px;
   width:100%;
   height:100%;
+
+  display:flex;
+  flex-direction: column;
+  column-gap: 20px;
+  align-items: center;
+  justify-content: center;
 `
-
-
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: '#1976d2',  
-//     },
-//     secondary: {
-//       main: '#9c27b0',  
-//     },
-//   },
-//   typography: {
-//     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-//     h1: {
-//       fontWeight: 700,
-//     },
-//     h2: {
-//       fontWeight: 600,
-//     },
-//   },
-//   spacing: 8, 
-// });
