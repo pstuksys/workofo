@@ -1,6 +1,7 @@
 import App from './App';
 import ReactDOM from 'react-dom/client';
-
+import '../public/index.css';
+import CustomLocalizationProvider from './components/shared/CustomLocalizationProvider';
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
@@ -8,6 +9,11 @@ if (!rootElement) {
   }
   
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<App />);
+  
+  root.render(
+    <CustomLocalizationProvider>
+      <App />
+    </CustomLocalizationProvider>
+);
 
   
