@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import MaterialUi from "./components/material-ui";
-import dayjs, { Dayjs } from "dayjs";
+import  { Dayjs } from "dayjs";
 import { useState } from "react";
 
 const App = () => {
@@ -8,19 +8,19 @@ const App = () => {
   const [state,setState] = useState<{time:Dayjs | null,error: string | null}>({time:null,error:null});
 
   return (
-        <AppContainer>
+    <AppContainer>
 
-          {state.error ? <p>{state.error}</p> : null}
+      {state.error ? <p>{state.error}</p> : null}
 
-          {state?.time?.isValid() ? <p>{state.time.format(`YYYY-MM-DD HH:MM`)}</p> : null}
-          
-          <MaterialUi 
-            onChange={(val)=>{setState((prev)=>({...prev,time:val}))}}
-            onError={(err)=>setState((prev)=>({...prev,error:err}))}
-            minTime={dayjs()} 
-            maxTime={dayjs()}
-          />
-        </AppContainer>
+      {state?.time?.isValid() ? <p>{state.time.format(`YYYY-MM-DD HH:MM`)}</p> : null}
+      
+      <MaterialUi 
+        onChange={(val)=>{setState((prev)=>({...prev,time:val}))}}
+        onError={(err)=>setState((prev)=>({...prev,error:err}))}
+        minTime={{hours:0,minutes:15}} 
+        maxTime={{hours:24,minutes:0}}
+      />
+    </AppContainer>
  
   )
 }

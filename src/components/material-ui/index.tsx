@@ -2,13 +2,12 @@ import {  createTheme, Theme, ThemeProvider } from "@mui/material";
 import { SxProps } from "@mui/system";
 import { TimePicker, TimeValidationError } from "@mui/x-date-pickers"
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
 import styled from "styled-components"
 
 export namespace NMuiProps {
   export type props =  {
-    minTime?:Dayjs;
-    maxTime?:Dayjs;
+    minTime?:TTime;
+    maxTime?:TTime;
     defaultValue?:Dayjs | null;
     onChange:(val:Dayjs | null) => void;
     onClose?:()=>void;
@@ -19,6 +18,11 @@ export namespace NMuiProps {
     /**@default false */
     isDisabled?:boolean;
     errorMsg?:string;
+  }
+
+  type TTime = {
+    hours:number;
+    minutes:number;
   }
   
 }
@@ -42,9 +46,9 @@ const theme = createTheme({
  * <MaterialUi 
  *   onChange={(val)=>{setState((prev)=>({...prev,time:val}))}}
  *   onError={(err)=>setState((prev)=>({...prev,error:err}))}
- *   minTime={dayjs()} 
- *   maxTime={dayjs()}
- * />
+ *   minTime={{hours:0,minutes:15}} 
+ *   maxTime={{hours:24,minutes:0}}
+ *  />
  */
 const MaterialUi = (props:NMuiProps.props) => {
   const {
@@ -59,8 +63,8 @@ const MaterialUi = (props:NMuiProps.props) => {
     errorMsg
     } = props;
 
-  const startTime=dayjs().hour(0).minute(0);
-  const endTime = dayjs().hour(24).minute(59)
+  const startTime=dayjs().hour(minTime?.hours || 0).minute(minTime?.minutes || 0);
+  const endTime = dayjs().hour(maxTime?.hours || 24).minute(maxTime?.hours || 0)
 
 
   return (
@@ -70,8 +74,8 @@ const MaterialUi = (props:NMuiProps.props) => {
           defaultValue={defaultValue}
           disableIgnoringDatePartForTimeValidation
           ampm={false} 
-          minTime={minTime || startTime} 
-          maxTime={maxTime || endTime} 
+          minTime={startTime} 
+          maxTime={endTime} 
           onChange={(e)=> onChange(e)}
           value={value}
           onClose={onClose}
